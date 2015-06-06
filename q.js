@@ -376,3 +376,7 @@ var time = function(toExecute) {
       // Q.import(modules, )
    }
 })(Q);
+
+// In order to fit CommonJS module spec 1.1, define a require object that fits it as such.
+// This must be after Q is fully populated, and is referential.
+window.require = Q;
