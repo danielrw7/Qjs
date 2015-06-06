@@ -20,9 +20,19 @@ T.test("module loading from file",function(assert) {
     assert.ok(Q.getModule('test-module-1'),"module exists");
 });
 
+T.test("module loading without using getModule",function(assert){
+    (function(Q) {
+        var module = new Q.module('test-module-2');
+
+        module.jQueryRequired = false;
+    })(Q);
+
+    assert.ok(Q('test-module-2'),"module loaded using Q('module-name') syntax")
+});
+
 T.test("accessing a module method",function(assert){
     (function(Q){
-        var module = new Q.module('test-module-2');
+        var module = new Q.module('test-module-3');
 
         module.jQueryRequired = false;
 
@@ -31,14 +41,14 @@ T.test("accessing a module method",function(assert){
         };
     })(Q);
 
-    assert.equal(Q.getModule('test-module-2').doubleInput(4),8,"module method was called and returned correctly");
+    assert.equal(Q.getModule('test-module-3').doubleInput(4),8,"module method was called and returned correctly");
 });
 
 T.test("event binding and triggering",function(assert){
     var done = assert.async();
 
     (function(Q){
-        var module = new Q.module('test-module-3');
+        var module = new Q.module('test-module-4');
 
         module.jQueryRequired = false;
 
@@ -48,5 +58,5 @@ T.test("event binding and triggering",function(assert){
         });
     })(Q);
 
-    Q.getModule('test-module-3').trigger('test-event');
+    Q.getModule('test-module-4').trigger('test-event');
 });
