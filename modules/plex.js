@@ -90,6 +90,69 @@
       });
    };
 
+   module.add = function(thingName, values, callback, errorCallback) {
+        var callback = (callback || function(){});
+
+        if(!errorCallback) {
+            var errorCallback = function(error){
+                throw error;
+            };
+        }
+
+        var successCallback = function(data) {
+            if(data.error) {
+                errorCallback(data.errorData);
+            } else {
+                callback(data);
+            }
+        };
+
+        return $.ajax({
+            url: this.serverAddress + '/' + this.serverPath,
+            data: {
+                type: 'add',
+                name: thingName,
+                thingObject: JSON.stringify(values),
+            },
+            method: 'POST',
+            dataType:'json',
+            success: successCallback,
+            error: errorCallback
+        });
+
+   };
+
+   module.schema = function(thingName, callback, errorCallback) {
+       var callback = (callback || function() {});
+
+       if(!errorCallback){
+           var errorCallback = function(error) {
+               throw error;
+           }
+       }
+
+       var successCallback = function(data) {
+           if(data.error) {
+               errorCallback(data.errorData);
+           } else {
+               callback(data);
+           }
+       };
+
+
+       return $.ajax({
+           url: this.serverAddress + '/' + this.serverPath,
+           data: {
+               type: 'schema',
+               name: thingName
+           },
+           method: 'GET',
+           dataType:'json',
+           success: successCallback,
+           error: errorCallback
+       });
+   };
+
    module.watch = function(checkChange, onChangeCallback, startDelay, iterateMultiplier, maxDelay) {
       var self = this;
       if (self.modules) {
