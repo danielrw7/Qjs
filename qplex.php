@@ -103,7 +103,7 @@ include_once("$MAJ_include_path/code/check_session.php");
 $verbose = true;
 
 //50 per list page
-$count_per_list_page = 50;
+$count_per_list_page = (is_numeric($MAJ_number_of_things_to_display_on_a_page) ? $MAJ_number_of_things_to_display_on_a_page : 100);
 
 $method_name = $_SERVER['REQUEST_METHOD'];
 
@@ -212,6 +212,10 @@ try{
         // die(print_r($populated_page,true));
 
         $populated_page = maj_get_fields_from_arrays($populated_page, $fields);
+
+        $populated_page["page"] = $escaped_page;
+
+        $populated_page["additionalPages"] = (count($pages)-1 <= $escaped_page ? false : true);
 
         echo(json_encode($populated_page));
 
